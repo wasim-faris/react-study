@@ -1,10 +1,11 @@
-import Navbar from "./components/navbar/Navbar";
+import Timer from "./components/timer/Timer";
 
-function App(){
-  return(
-    <div>
-     <Navbar/>
-    </div>
+function App() {
+  return (
+    <>
+    <Timer/>
+    </>
   )
 }
+
 export default App;
