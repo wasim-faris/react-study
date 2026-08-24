@@ -1,18 +1,35 @@
-import {BrowserRouter, Routes, Route} from "react-router-dom"
-import Home from "./components/Home"
-import About from "./components/About"
-import Products from "./components/Products"
+import { useEffect, useState } from "react";
 
-function App(){
+
+function App() {
+  const [running, setRunning] = useState(false)
+  const [sec, setSec] = useState(0)
+
+  useEffect(()=>{
+    if(running){
+      const timer = setInterval(() => {
+        setSec((sec)=> sec + 1)
+      }, 1000);
+
+      return ()=> clearInterval(timer)
+    }
+  },[running])
+
+
   return(
-    <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Home/>}/>
-      <Route path="/about" element={<About/>}/>
-      <Route path = "/products" element={<Products/>}/>
-    </Routes>
-    </BrowserRouter>
+    <div>
+      <h1>
+        {sec}
+      </h1>
+      <button onClick={()=> setRunning(true)}> start</button>
+      <button onClick={()=> setRunning(false)}>stop</button>
+      <button onClick={()=>{
+        setRunning(false);
+        setSec(0)
+      }}>reset</button>
+    </div>
   )
+ 
 }
 
 export default App;
