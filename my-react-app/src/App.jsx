@@ -1,35 +1,30 @@
-import { useEffect, useState } from "react";
+import { useContext, createContext } from "react";
 
 
-function App() {
-  const [running, setRunning] = useState(false)
-  const [sec, setSec] = useState(0)
+ const themeContext = createContext();
 
-  useEffect(()=>{
-    if(running){
-      const timer = setInterval(() => {
-        setSec((sec)=> sec + 1)
-      }, 1000);
-
-      return ()=> clearInterval(timer)
-    }
-  },[running])
-
-
-  return(
-    <div>
-      <h1>
-        {sec}
-      </h1>
-      <button onClick={()=> setRunning(true)}> start</button>
-      <button onClick={()=> setRunning(false)}>stop</button>
-      <button onClick={()=>{
-        setRunning(false);
-        setSec(0)
-      }}>reset</button>
-    </div>
-  )
  
+function App(){
+  const theme = "dark"
+  return (
+    <themeContext.Provider value = {theme}>
+      <Home/>
+    </themeContext.Provider>
+  )
 }
 
+function Home(){
+  return <Profile/>
+}
+
+function Profile(){
+  return <Theme/>
+}
+
+function Theme(){
+  const theme = useContext(themeContext)
+  return (
+    <h1>theme is {theme}</h1>
+  )
+}
 export default App;
