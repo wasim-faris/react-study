@@ -1,30 +1,14 @@
-import { useContext, createContext } from "react";
+import Usercontext from "./context/useContext"
+import User from "./components/User"
 
-
- const themeContext = createContext();
-
- 
 function App(){
-  const theme = "dark"
-  return (
-    <themeContext.Provider value = {theme}>
-      <Home/>
-    </themeContext.Provider>
+  const username = "wasim faris";
+
+  return(
+    <Usercontext.Provider value={username}>
+      <User/>
+    </Usercontext.Provider>
   )
 }
 
-function Home(){
-  return <Profile/>
-}
-
-function Profile(){
-  return <Theme/>
-}
-
-function Theme(){
-  const theme = useContext(themeContext)
-  return (
-    <h1>theme is {theme}</h1>
-  )
-}
 export default App;
