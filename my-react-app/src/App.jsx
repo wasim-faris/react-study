@@ -1,45 +1,28 @@
-import { createContext, useContext, useState } from "react";
+import { lazy, Suspense, useState } from "react";
 
-const LoginContext = createContext();
+import Home from "./components/Home";
 
-function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const About = lazy(()=> import("./components/About"));
 
-  function login() {
-    setIsLoggedIn(true);
-  }
+const Profile = lazy(()=> import("./components/Profile"));
 
-  function logout() {
-    setIsLoggedIn(false);
-  }
-
-  return (
-    <LoginContext.Provider value={{ isLoggedIn, login, logout }}>
-      <Login />
-      <Dashboard />
-    </LoginContext.Provider>
-  );
-}
-
-function Login() {
-  const { login, logout } = useContext(LoginContext);
+function App(){
+  const [page, setPage] = useState("home");
 
   return (
     <div>
-      <button onClick={login}>Login</button>
-      <button onClick={logout}>Logout</button>
+        <button onClick={()=> setPage("home")}>home</button>
+          <button onClick={()=> setPage("about")}>about</button>
+          <button onClick={()=> setPage("profile")}>profiile</button>
+
+          {page=="home" && <Home/>}
+          <Suspense fallback={<h1>loading</h1>}>
+          {page=="about" && <About/>}
+          {page =="profile" && <Profile/>}
+          </Suspense>
     </div>
-  );
-}
 
-function Dashboard() {
-  const { isLoggedIn } = useContext(LoginContext);
-
-  return (
-    <h1>
-      {isLoggedIn ? "Welcome User" : "Please Login"}
-    </h1>
-  );
+  )
 }
 
 export default App;
