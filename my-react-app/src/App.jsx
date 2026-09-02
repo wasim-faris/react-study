@@ -1,27 +1,44 @@
-import { useMemo, useState } from "react";
+import { createContext, useContext, useState } from "react";
+
+const LoginContext = createContext();
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [number, setNumber] = useState(5);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const doubledNumber = useMemo(() => {
-    console.log("Calculating...");
-    return number * 2;
-  }, [number]);
+  function login() {
+    setIsLoggedIn(true);
+  }
+
+  function logout() {
+    setIsLoggedIn(false);
+  }
+
+  return (
+    <LoginContext.Provider value={{ isLoggedIn, login, logout }}>
+      <Login />
+      <Dashboard />
+    </LoginContext.Provider>
+  );
+}
+
+function Login() {
+  const { login, logout } = useContext(LoginContext);
 
   return (
     <div>
-      <h1>Count: {count}</h1>
-      <h2>Doubled Number: {doubledNumber}</h2>
-
-      <button onClick={() => setCount(count + 1)}>
-        Increase Count
-      </button>
-
-      <button onClick={() => setNumber(number + 1)}>
-        Increase Number
-      </button>
+      <button onClick={login}>Login</button>
+      <button onClick={logout}>Logout</button>
     </div>
+  );
+}
+
+function Dashboard() {
+  const { isLoggedIn } = useContext(LoginContext);
+
+  return (
+    <h1>
+      {isLoggedIn ? "Welcome User" : "Please Login"}
+    </h1>
   );
 }
 
